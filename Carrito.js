@@ -1,47 +1,37 @@
 // Carrito.js
-// =========================
-// CONFIG
-// =========================
 const API_BASE = "https://backendfinal-rkrx.onrender.com/api";
 let token = localStorage.getItem("token");
-
-// =========================
-// CARRITO LOCAL
-// =========================
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
+function guardarCarrito() { localStorage.setItem("carrito", JSON.stringify(carrito)); }
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-// =========================
-// MOSTRAR CARRITO
-// =========================
 function mostrarCarrito() {
   const contenedor = document.getElementById("lista-carrito");
   if (!contenedor) return;
   contenedor.innerHTML = "";
 
   let total = 0;
-
   carrito.forEach((item, index) => {
     total += item.precio * item.cantidad;
-
     const div = document.createElement("div");
     div.classList.add("carrito-item");
-
+    div.dataset.index = index;
     div.innerHTML = `
       <span>${escapeHtml(item.producto)}</span>
-
       <div class="cantidad-control">
         <button class="btn-restar" data-index="${index}">-</button>
-        <input type="number" min="1" value="${item.cantidad}" data-index="${index}">
+        <input type="number" min="1" value="${item.cantidad}" data-index="${index}" />
         <button class="btn-sumar" data-index="${index}">+</button>
       </div>
-
       <span>$${item.precio * item.cantidad}</span>
     `;
-
     contenedor.appendChild(div);
   });
 
@@ -49,33 +39,30 @@ function mostrarCarrito() {
   totalDiv.textContent = `Total: $${total}`;
   contenedor.appendChild(totalDiv);
 
-  // Eventos dinámicos
-  document.querySelectorAll(".btn-sumar").forEach(btn =>
-    btn.addEventListener("click", (e) => {
-      const idx = e.target.dataset.index;
+  // Delegación de eventos en contenedor para evitar listeners duplicados
+  contenedor.querySelectorAll(".btn-sumar").forEach(btn =>
+    btn.addEventListener("click", e => {
+      const idx = e.currentTarget.dataset.index;
       carrito[idx].cantidad++;
       guardarCarrito();
       mostrarCarrito();
     })
   );
 
-  document.querySelectorAll(".btn-restar").forEach(btn =>
-    btn.addEventListener("click", (e) => {
-      const idx = e.target.dataset.index;
-      if (carrito[idx].cantidad > 1) {
-        carrito[idx].cantidad--;
-      } else {
-        carrito.splice(idx, 1);
-      }
+  contenedor.querySelectorAll(".btn-restar").forEach(btn =>
+    btn.addEventListener("click", e => {
+      const idx = e.currentTarget.dataset.index;
+      if (carrito[idx].cantidad > 1) carrito[idx].cantidad--;
+      else carrito.splice(idx, 1);
       guardarCarrito();
       mostrarCarrito();
     })
   );
 
-  document.querySelectorAll(".cantidad-control input").forEach(input =>
-    input.addEventListener("change", (e) => {
-      const idx = e.target.dataset.index;
-      let cant = parseInt(e.target.value);
+  contenedor.querySelectorAll(".cantidad-control input").forEach(input =>
+    input.addEventListener("change", e => {
+      const idx = e.currentTarget.dataset.index;
+      let cant = parseInt(e.currentTarget.value, 10);
       if (isNaN(cant) || cant < 1) cant = 1;
       carrito[idx].cantidad = cant;
       guardarCarrito();
@@ -84,36 +71,17 @@ function mostrarCarrito() {
   );
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+document.addEventListener("DOMContentLoaded", mostrarCarrito);
 
-mostrarCarrito();
-
-// =========================
-// ENVIAR PEDIDO AL BACKEND
-// =========================
-const pedidoForm = document.getElementById("pedido-form");
-if (pedidoForm) {
+// Envío del pedido
+document.addEventListener("DOMContentLoaded", () => {
+  const pedidoForm = document.getElementById("pedido-form");
+  if (!pedidoForm) return;
   pedidoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    token = localStorage.getItem("token"); // actualizar por si cambió
-    if (!token) {
-      alert("⚠️ Debes iniciar sesión para hacer un pedido");
-      window.location.href = "login.html";
-      return;
-    }
-
-    if (carrito.length === 0) {
-      alert("El carrito está vacío.");
-      return;
-    }
+    token = localStorage.getItem("token");
+    if (!token) { alert("⚠️ Debes iniciar sesión para hacer un pedido"); window.location.href = "login.html"; return; }
+    if (carrito.length === 0) { alert("El carrito está vacío."); return; }
 
     const data = {
       nombreCliente: document.getElementById("nombre").value,
@@ -126,28 +94,24 @@ if (pedidoForm) {
     try {
       const res = await fetch(`${API_BASE}/pedidos`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(data)
       });
 
       if (!res.ok) {
         const body = await res.json().catch(()=>null);
         console.error("Error creating order:", body);
-        throw new Error(body?.message || "Error creando pedido");
+        alert(body?.error || `Error creando pedido (status ${res.status})`);
+        return;
       }
 
       alert("✅ Pedido enviado correctamente");
-
       localStorage.removeItem("carrito");
       carrito = [];
       mostrarCarrito();
-
     } catch (err) {
       console.error(err);
       alert("❌ Error enviando el pedido");
     }
   });
-}
+});

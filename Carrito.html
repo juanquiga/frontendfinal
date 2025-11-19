@@ -1,35 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Carrito</title>
-  <link rel="stylesheet" href="Carrito.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/frontendfinal/">
+  <link rel="stylesheet" href="Carrito.css" />
   <script src="Carrito.js" defer></script>
+  <script src="usuarioBar.js" defer></script>
 </head>
 <body>
   <div id="usuarioBar"></div>
-<script src="usuarioBar.js"></script>
+
   <header>
-  <nav>
-    <ul class="menubotones">
-      <li><a href="index.html" class="btn">Inicio</a></li>
-      <li><a href="Sobrenosotros.html" class="btn">Sobre Nosotros</a></li>
-      <li><a href="Categoria.html" class="btn">Productos</a></li>
-      <li><a href="Fundadores.html" class="btn">Fundadores</a></li>
-    </ul>
-  </nav>
-</header>
+    <nav>
+      <ul class="menubotones">
+        <li><a href="index.html" class="btn">Inicio</a></li>
+        <li><a href="Sobrenosotros.html" class="btn">Sobre Nosotros</a></li>
+        <li><a href="Categoria.html" class="btn">Productos</a></li>
+        <li><a href="Fundadores.html" class="btn">Fundadores</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <h1>Tu carrito</h1>
-  <div id="lista-carrito"></div>
+  <main>
+    <h1>Tu carrito</h1>
+    <div id="lista-carrito"></div>
 
-  <h2>Datos del cliente</h2>
-  <form id="pedido-form">
-    <input type="text" id="nombre" placeholder="Tu nombre" required>
-    <input type="text" id="telefono" placeholder="Teléfono" required>
-    <input type="text" id="direccion" placeholder="Dirección" required>
-    <button type="submit">Finalizar Pedido</button>
-  </form>
+    <h2>Datos del cliente</h2>
+    <form id="pedido-form">
+      <input type="text" id="nombre" placeholder="Tu nombre" required />
+      <input type="text" id="telefono" placeholder="Teléfono" required />
+      <input type="text" id="direccion" placeholder="Dirección" required />
+      <button type="submit">Finalizar Pedido</button>
+    </form>
+  </main>
 </body>
 </html>

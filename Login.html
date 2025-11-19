@@ -1,8 +1,26 @@
-<form id="loginForm">
-  <label>Usuario <input id="username" name="username" required></label>
-  <label>Contraseña <input id="password" name="password" type="password" required></label>
-  <button type="submit">Iniciar sesión</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Iniciar sesión</title>
+  <base href="/frontendfinal/">
+  <link rel="stylesheet" href="Estilo.css" />
+</head>
+<body>
+  <div id="usuarioBar"></div>
+  <script src="usuarioBar.js" defer></script>
 
-<!-- al final del body -->
-<script src="login.js"></script>
+  <main>
+    <h1>Iniciar sesión</h1>
+
+    <form id="loginForm">
+      <label>Usuario<br/><input id="username" name="username" required /></label><br/>
+      <label>Contraseña<br/><input id="password" name="password" type="password" required /></label><br/>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+  </main>
+
+  <script src="login.js" defer></script>
+</body>
+</html>

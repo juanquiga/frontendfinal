@@ -1,7 +1,25 @@
-<form id="registerForm">
-  <label>Usuario <input id="username" name="username" required></label>
-  <label>Contraseña <input id="password" name="password" type="password" required></label>
-  <button type="submit">Registrarse</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro</title>
+  <base href="/frontendfinal/">
+  <link rel="stylesheet" href="Estilo.css" />
+</head>
+<body>
+  <div id="usuarioBar"></div>
+  <script src="usuarioBar.js" defer></script>
 
-<script src="registro.js"></script>
+  <main>
+    <h1>Registrarse</h1>
+    <form id="registerForm">
+      <label>Usuario<br/><input id="username" name="username" required /></label><br/>
+      <label>Contraseña<br/><input id="password" name="password" type="password" required /></label><br/>
+      <button type="submit">Registrarse</button>
+    </form>
+  </main>
+
+  <script src="registro.js" defer></script>
+</body>
+</html>

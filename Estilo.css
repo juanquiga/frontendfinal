@@ -1,0 +1,307 @@
+/* ================= CONTENEDOR PRINCIPAL ================= */
+.dividir-pantalla {
+  display: flex;      /* Flexbox: permite dividir contenido horizontalmente */
+  height: 100vh;      /* Ocupa el 100% de la altura de la ventana */
+}
+
+/* Columna izquierda con imagen */
+.dividir-pantalla .izquierda {
+  flex: 1;                               /* Ocupa la mitad del espacio disponible */
+  background-image: url('GalletaMENU.jpg'); /* Imagen de fondo */
+  background-size: cover;                 /* Ajusta la imagen para cubrir todo el contenedor */
+  background-position: center;            /* Centra la imagen */
+  background-repeat: no-repeat;           /* Evita repetir la imagen */
+
+  margin: 30px;                           /* Espacio externo alrededor */
+  border-radius: 20px;                    /* Bordes redondeados */
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.25); /* Sombra para efecto “card” */
+}
+
+/* Columna derecha */
+.dividir-pantalla .derecha {
+  flex: 1;                               /* Ocupa la otra mitad */
+  display: flex;                         /* Flexbox interno */
+  flex-direction: column;                /* Organiza el contenido verticalmente */
+  justify-content: flex-start;           /* Comienza desde arriba */
+  align-items: center;                   /* Centra horizontalmente */
+  padding: 2rem;                         /* Espacio interno */
+  background-color: #f6f7f6;             /* Fondo color claro */
+  font-family: cursive, Arial, sans-serif; /* Tipo de letra */
+  color: #000000;                        /* Color del texto */
+  min-height: 100vh;                     /* Altura mínima igual a la ventana */
+  box-sizing: border-box;                /* Incluye padding y borde en el tamaño */
+}
+
+/* Fondo general */
+body {
+  background: linear-gradient(135deg, #fffdf9, #f9f4ef); /* Degradado diagonal */
+  font-family: Arial, sans-serif;      /* Fuente base */
+  margin: 0;                           /* Sin margen */
+  padding: 20px;                        /* Espacio interno */
+}
+
+/* ================= HEADER Y MENÚ ================= */
+header {
+  width: 100%;                     /* Ocupa todo el ancho */
+  display: flex;                    /* Flexbox */
+  justify-content: flex-end;        /* Elementos a la derecha */
+  align-items: center;              /* Centrado vertical */
+  padding: 1rem 2rem;               /* Espacio interno */
+  box-sizing: border-box;
+  position: sticky;                 /* Se mantiene al hacer scroll */
+  top: 0;                            /* Fijo en la parte superior */
+  background-color: #f6f7f6;       /* Fondo igual a la columna derecha */
+  z-index: 10;                      /* Encima de otros elementos */
+}
+
+/* Menú de navegación */
+.menubotones {
+  list-style: none;                 /* Sin viñetas */
+  padding: 0;                        /* Sin padding */
+  display: flex;                     /* Flex horizontal */
+  gap: 0.8rem;                       /* Espacio entre botones */
+  margin: 0;                          /* Sin margen */
+}
+
+/* Botones */
+.btn {
+  display: inline-block;            /* Permite padding y tamaño */
+  padding: 0.6rem 1.5rem;           /* Espacio interno */
+  background-color: #a09997;        /* Color de fondo */
+  color: white;                      /* Color del texto */
+  text-decoration: none;             /* Quita subrayado */
+  border-radius: 12px;               /* Bordes redondeados */
+  font-weight: bold;                 /* Texto en negrita */
+  transition: all 0.3s ease;        /* Animación suave al hover */
+}
+
+.btn:hover {
+  background-color: #7c7574;        /* Cambio de color al pasar el mouse */
+  transform: scale(1.05);           /* Aumenta ligeramente el tamaño */
+}
+
+/* ================= TÍTULO Y DESCRIPCIÓN ================= */
+.titulo-bienvenida {
+  display: flex;                     /* Flex vertical */
+  flex-direction: column;            /* Apila elementos */
+  align-items: center;               /* Centrado horizontal */
+  gap: 1rem;                         /* Espacio entre elementos */
+  margin-top: 6rem;                  /* Separación del header */
+}
+
+.titulogrande {
+  font-size: 85px;                   /* Tamaño grande */
+  font-style: italic;                /* Cursiva */
+  font-weight: 700;                  /* Negrita */
+  margin: 0;                         /* Sin margen */
+  text-align: center;                /* Centrado */
+}
+
+.bienvenido {
+  font-size: 22px;                   /* Tamaño mediano */
+  margin: 0;                         
+  color: #333;                       /* Color gris oscuro */
+}
+
+.contenido {
+  text-align: justify;               /* Texto justificado */
+  max-width: 600px;                  /* Ancho máximo */
+  line-height: 1.5;                  /* Altura de línea */
+  margin-top: 2rem;                  /* Separación superior */
+  margin-bottom: 7rem;               /* Separación inferior */
+  font-size: 25px;                   /* Tamaño del texto */
+}
+
+.contenido p {
+  margin: 0;                         /* Sin margen adicional */
+}
+
+/* ================= SECCIÓN SOBRE NUESTRA TIENDA ================= */
+.sobre-tienda {
+  max-width: 900px;                  /* Ancho máximo */
+  margin: 3rem auto;                 /* Centrado horizontal, margen arriba y abajo */
+  padding: 2rem 3rem;                /* Espacio interno */
+  background-color: #fff;            /* Fondo blanco */
+  border-radius: 15px;               /* Bordes redondeados */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  text-align: center;                /* Centrado del texto */
+}
+
+.sobre-tienda h1 {
+  font-size: 3rem;                   /* Título principal grande */
+  font-style: italic;                /* Cursiva */
+  color: #5a3e2b;                    /* Color marrón */
+  margin-bottom: 1rem;               /* Espacio debajo */
+}
+
+.sobre-tienda h2 {
+  font-size: 2rem;                   /* Subtítulo */
+  color: #478487;                    /* Color azul verdoso */
+  margin-bottom: 1.5rem;
+}
+
+.sobre-tienda p {
+  font-size: 1.2rem;                 /* Texto legible */
+  line-height: 1.7;                  /* Altura de línea */
+  color: #333;                       /* Gris oscuro */
+  text-align: justify;               /* Justificado */
+  margin-bottom: 1rem;
+}
+
+/* Fondo especial según página */
+body.inicio {
+  margin: 0;
+  padding: 0;
+  background: url('fondonuevo.jpg') repeat center center fixed; /* Patrón fijo */
+  background-size: 400px 400px;      /* Tamaño del patrón */
+}
+
+body.Carrito {
+  margin: 0;
+  padding: 0;
+  background: url('fondonuevo.jpg') repeat center center fixed;
+  background-size: cover;             /* Cubre todo el contenedor */
+}
+
+/* ================= CARRITO / PRODUCTOS ================= */
+.card img {
+  width: 150px;                       /* Ancho fijo */
+  height: 150px;                      /* Alto fijo */
+  object-fit: cover;                  /* Ajusta la imagen sin deformar */
+  border-radius: 15px;                /* Bordes redondeados */
+  margin-bottom: 15px;
+  display: block;                     /* Bloque para centrar */
+  margin-left: auto;
+  margin-right: auto;                 /* Centra horizontalmente */
+}
+
+.producto {
+  display: flex;                     /* Flex horizontal */
+  align-items: center;               /* Centrado vertical */
+  justify-content: space-between;    /* Separación entre imagen y detalles */
+  background: #fff;                  /* Fondo blanco */
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Sombra suave */
+}
+
+.producto img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.nombre {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.info {
+  display: flex;                     /* Flex horizontal */
+  align-items: center;               /* Centrado vertical */
+  gap: 15px;                         /* Separación entre elementos */
+}
+
+.cantidad {
+  display: flex;                     /* Flex horizontal */
+  align-items: center;               /* Centrado vertical */
+  border: 2px solid #ccc;            /* Borde gris */
+  border-radius: 8px;
+  overflow: hidden;                   /* Evita que los hijos se salgan */
+}
+
+.cantidad button {
+  background: #ddd;                  /* Fondo gris */
+  border: none;                      /* Sin borde */
+  padding: 10px 15px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s;       /* Animación suave al hover */
+}
+
+.cantidad button:hover {
+  background: #bbb;                  /* Cambia color al pasar mouse */
+}
+
+.cantidad span {
+  padding: 0 15px;
+  font-size: 18px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.finalizar {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;           /* Centra botón de finalizar */
+}
+
+.finalizar button {
+  background: #f2c290;               /* Verde */
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.finalizar button:hover {
+  background: #f2c290;               /* Verde oscuro al hover */
+}
+
+/* ================= PERFILES / INTEGRANTES ================= */
+.container {
+  display: flex;                     /* Flex horizontal */
+  justify-content: space-between;    /* Separa los perfiles */
+  gap: 20px;                         /* Espacio entre perfiles */
+  max-width: 900px;                  /* Ancho máximo */
+  margin: 0 auto;                    /* Centrado horizontal */
+  flex-wrap: wrap;                    /* Permite que se apilen en móviles */
+}
+
+.profile {
+  background-color: #fff0e1;         /* Fondo naranja claro */
+  padding: 20px;
+  border-radius: 10px;
+  width: 45%;                        /* Dos perfiles por fila */
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;                /* Circular */
+  background-color: #f2c290;         /* Color de fondo, puede ser imagen */
+  margin: 0 auto 15px auto;          /* Centrado horizontal con margen inferior */
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #8b4513;                    /* Marrón */
+}
+
+p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+/* Responsive: perfiles en móviles se apilan */
+@media (max-width: 700px) {
+  .profile {
+    width: 100%;                     /* Ocupa todo el ancho */
+  }
+}
+
+.container-profiles {
+  display: flex;
+  justify-content: space-between;    /* Separa perfiles a los extremos */
+  gap: 20px;                         /* Espacio entre ellos */
+}

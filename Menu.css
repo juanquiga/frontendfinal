@@ -1,0 +1,142 @@
+/* ================= BASE / GLOBAL ================= */
+body {
+  background: linear-gradient(135deg, #fffdf9, #f9f4ef);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Fondo especial según página */
+body.inicio {
+  margin: 0;
+  padding: 0;
+  background: url('fondonuevo.jpg') repeat center center fixed; /* Patrón fijo */
+  background-size: 400px 400px;      /* Tamaño del patrón */
+}
+
+body.Carrito {
+  margin: 0;
+  padding: 0;
+  background: url('fondonuevo.jpg') repeat center center fixed;
+  background-size: cover;             /* Cubre todo el contenedor */
+}
+
+
+/* ================= HEADER Y MENÚ ================= */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  background-color: #f6f7f6;
+  z-index: 10;
+}
+
+.menubotones {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background-color: #a09997;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #7c7574;
+  transform: scale(1.05);
+}
+
+/* ================= SECCIÓN MENÚ / CATÁLOGO ================= */
+.sobre-tienda {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 2rem 3rem;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.sobre-tienda h1 {
+  font-size: 3rem;
+  font-style: italic;
+  color: #5a3e2b;
+  margin-bottom: 1.5rem;
+}
+
+/* 📦 Contenedor de productos en cuadrícula */
+#productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  padding: 10px;
+}
+
+/* 🎴 Card individual */
+.card {
+  background: #fffdf9;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 1.2rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Imagen dentro de la card */
+.card img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* Nombre del producto */
+.card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Descripción */
+.card p {
+  font-size: 1rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+/* Botón del carrito */
+.card button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #f2c290;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.card button:hover {
+  background: #d49f70;
+}
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro - ChocoBite</title>
+  <link rel="stylesheet" href="Estilo.css" />
+</head>
+<body>
+  <div id="usuarioBar"></div>
+  <script src="usuarioBar.js"></script>
+
+  <main style="max-width:420px;margin:3rem auto;padding:1.5rem;background:#fff;border-radius:12px;">
+    <h2>Crear cuenta</h2>
+
+    <form id="registerForm">
+      <input id="username" type="text" placeholder="Usuario" required style="width:100%;margin:8px 0;padding:10px;border-radius:8px;" />
+      <input id="password" type="password" placeholder="Contraseña" required style="width:100%;margin:8px 0;padding:10px;border-radius:8px;" />
+      <button type="submit" class="btn" style="width:100%;margin-top:8px;">Registrarse</button>
+    </form>
+
+    <p style="margin-top:12px;text-align:center;">
+      ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+    </p>
+  </main>
+
+  <script src="registro.js"></script>
+</body>
+</html>

@@ -1,26 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Iniciar sesión</title>
+  <title>Iniciar sesión - ChocoBite</title>
   <base href="/frontendfinal/">
-  <link rel="stylesheet" href="Estilo.css" />
+  <link rel="stylesheet" href="Estilo.css">
 </head>
 <body>
   <div id="usuarioBar"></div>
-  <script src="usuarioBar.js" defer></script>
+  <main class="page-center">
+    <div class="auth-card">
+      <div class="auth-left">
+        <h1>Bienvenido a <span class="brand">ChocoBite</span></h1>
+        <p class="muted">Inicia sesión para finalizar tus pedidos y ver tu historial.</p>
+        <img src="assets/cookies-illustration.svg" alt="Galletas" class="auth-illustration" />
+      </div>
 
-  <main>
-    <h1>Iniciar sesión</h1>
+      <div class="auth-right">
+        <h2>Iniciar sesión</h2>
+        <form id="loginForm" class="form">
+          <label class="field">
+            <span class="field-label">Usuario</span>
+            <input id="username" name="username" required autocomplete="username" />
+          </label>
 
-    <form id="loginForm">
-      <label>Usuario<br/><input id="username" name="username" required /></label><br/>
-      <label>Contraseña<br/><input id="password" name="password" type="password" required /></label><br/>
-      <button type="submit">Iniciar sesión</button>
-    </form>
+          <label class="field">
+            <span class="field-label">Contraseña</span>
+            <input id="password" name="password" type="password" required autocomplete="current-password" />
+          </label>
+
+          <div class="actions">
+            <button type="submit" class="btn primary">Entrar</button>
+            <a class="btn ghost" href="registro.html">Crear cuenta</a>
+          </div>
+          <p class="muted small">¿Problemas para iniciar? Verifica tus credenciales o regístrate.</p>
+        </form>
+      </div>
+    </div>
   </main>
 
+  <script src="usuarioBar.js" defer></script>
   <script src="login.js" defer></script>
 </body>
 </html>

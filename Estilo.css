@@ -305,3 +305,111 @@ p {
   justify-content: space-between;    /* Separa perfiles a los extremos */
   gap: 20px;                         /* Espacio entre ellos */
 }
+
+/* Estilo.css - base para frontendfinal
+   - incluye diseño para login / registro
+*/
+
+/* Reset ligero */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #fff7f0; color: #1b1b1b; }
+
+/* Layout principal */
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+/* Top user bar (usuarioBar) */
+#usuarioBar { width: 100%; position: sticky; top: 0; z-index: 20; background: transparent; }
+#usuarioBar > div { max-width: 1100px; margin: 10px auto; padding: 6px 12px; display:flex; justify-content:flex-end; gap:12px; }
+
+/* Auth card */
+.auth-card {
+  width: 100%;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.92));
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(45,30,20,0.12);
+  overflow: hidden;
+}
+
+/* Left area: illustration + text */
+.auth-left {
+  padding: 36px;
+  background: linear-gradient(135deg, #ffd9c4 0%, #ffefd6 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+}
+.brand { color: #6b2d00; font-weight:800; letter-spacing: 0.6px; }
+.auth-left h1 { font-size: 1.6rem; margin-bottom: 6px; color: #4b1f00; }
+.auth-left .muted { color: #5a3a24; opacity: 0.95; }
+.auth-illustration { width: 80%; max-width: 240px; margin-top: 8px; filter: drop-shadow(0 6px 18px rgba(107,45,0,0.12)); }
+
+/* Right area: form */
+.auth-right {
+  padding: 34px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+}
+.auth-right h2 { font-size: 1.25rem; margin-bottom: 8px; color: #2b1b12; }
+
+/* Form */
+.form { display:flex; flex-direction:column; gap:12px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field-label { font-size: 0.9rem; color:#6a4b3a; }
+input[type="text"], input[type="password"], input[type="number"], textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(30,20,10,0.08);
+  background: rgba(255,255,255,0.98);
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow .15s, border-color .15s;
+}
+input:focus { box-shadow: 0 6px 18px rgba(107,45,0,0.08); border-color: rgba(107,45,0,0.18); }
+
+/* Buttons */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 10px 14px; border-radius: 10px; font-weight:600; cursor:pointer;
+  border: none; text-decoration:none;
+}
+.btn.primary { background: #7f3b00; color: #fff; box-shadow: 0 8px 18px rgba(127,59,0,0.18); }
+.btn.ghost { background: transparent; color: #7f3b00; border: 1px solid rgba(127,59,0,0.12); }
+
+.actions { display:flex; gap:10px; margin-top:8px; align-items:center; }
+
+/* Misc */
+.muted { color: #6b4e3b; opacity: 0.9; }
+.small { font-size: .85rem; color: #6b4e3b; opacity: .85; }
+
+/* Product card (Menu/Categoria) */
+.card {
+  background: #fff; border-radius: 10px; padding:14px; box-shadow: 0 6px 18px rgba(20,10,0,0.04);
+  margin: 10px; max-width: 280px;
+}
+.card img { width:100%; height:160px; object-fit:cover; border-radius: 8px; margin-bottom:8px; }
+
+/* Grid for products */
+#productos { display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-start; align-items:flex-start; }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .auth-card { grid-template-columns: 1fr; max-width: 560px; }
+  .auth-left { display:none; } /* simplificar en móvil */
+  #productos { justify-content:center; }
+}
+
+/* Small helpers */
+.container { max-width:1100px; margin: 0 auto; padding: 12px; }

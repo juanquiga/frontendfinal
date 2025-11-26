@@ -1,6 +1,5 @@
 // Carrito.js
 const API_BASE = "https://backendfinal-rkrx.onrender.com/api";
-let token = localStorage.getItem("token");
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 function guardarCarrito() { localStorage.setItem("carrito", JSON.stringify(carrito)); }
@@ -73,28 +72,29 @@ function mostrarCarrito() {
 
 document.addEventListener("DOMContentLoaded", mostrarCarrito);
 
-// Envío del pedido
+// Envío del pedido - AHORA USA EL ENDPOINT PÚBLICO /api/public/pedidos
 document.addEventListener("DOMContentLoaded", () => {
   const pedidoForm = document.getElementById("pedido-form");
   if (!pedidoForm) return;
   pedidoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    token = localStorage.getItem("token");
-    if (!token) { alert("⚠️ Debes iniciar sesión para hacer un pedido"); window.location.href = "login.html"; return; }
+    
+    // ELIMINADA LA VALIDACIÓN DE TOKEN - Ahora cualquiera puede hacer pedidos
     if (carrito.length === 0) { alert("El carrito está vacío."); return; }
 
     const data = {
-      nombreCliente: document.getElementById("nombre").value,
+      nombre: document.getElementById("nombre").value,
       telefono: document.getElementById("telefono").value,
       direccion: document.getElementById("direccion").value,
-      itemsJson: JSON.stringify(carrito),
+      items: JSON.stringify(carrito),
       total: carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
     };
 
     try {
-      const res = await fetch(`${API_BASE}/pedidos`, {
+      // CAMBIADO A ENDPOINT PÚBLICO: /api/public/pedidos (sin autenticación)
+      const res = await fetch(`${API_BASE}/public/pedidos`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
 

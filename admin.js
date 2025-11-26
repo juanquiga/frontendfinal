@@ -19,7 +19,7 @@ function verificarSesion() {
 
   if (isLoggedIn !== "true") {
     alert("⚠️ Debes iniciar sesión para acceder al panel de administración.");
-    window.location.href = "Login.html";
+    window.location.href = "login.html";
     return;
   }
 
@@ -38,7 +38,7 @@ function verificarSesion() {
 function cerrarSesion() {
   localStorage.clear();
   alert("✅ Sesión cerrada correctamente");
-  window.location.href = "Login.html";
+  window.location.href = "login.html";
 }
 
 function configurarEventos() {
@@ -53,53 +53,93 @@ async function cargarPedidos() {
   try {
     const token = localStorage.getItem("token");
     
-    // Try authenticated endpoint first
-    let response = await fetch(`${API_URL}/pedidos`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
+    // 1. Intentar endpoint autenticado
+    let responseAuth = await fetch(`${API_URL}/pedidos`, {
+      headers: { "Authorization": `Bearer ${token}` }
     });
 
-    if (!response.ok) {
-      // Fallback to public endpoint
-      response = await fetch(`${API_URL}/public/pedidos`);
-    }
-
-    const data = await response.json();
-    
-    // Handle different response formats
     let pedidosRaw = [];
-    if (Array.isArray(data)) {
-      pedidosRaw = data;
-    } else if (data.data && Array.isArray(data.data)) {
-      pedidosRaw = data.data;
-    } else if (data.pedidos && Array.isArray(data.pedidos)) {
-      pedidosRaw = data.pedidos;
+    let usarPublico = false;
+
+    if (responseAuth.ok) {
+      const dataAuth = await responseAuth.json();
+      console.log("Respuesta autenticada:", dataAuth);
+      if (dataAuth && Array.isArray(dataAuth.data)) {
+        console.log("Formato autenticado ResponseDTO");
+        pedidosRaw = dataAuth.data;
+      } else if (Array.isArray(dataAuth)) {
+        pedidosRaw = dataAuth;
+      }
+      // Si está vacío, forzar fallback
+      if (!pedidosRaw || pedidosRaw.length === 0) {
+        console.log("Lista autenticada vacía → usar datos públicos del script");
+        usarPublico = true;
+      }
     } else {
-      console.error("Formato de respuesta inesperado:", data);
-      pedidosRaw = [];
+      console.log("Fallo endpoint autenticado (", responseAuth.status, ") → usar público");
+      usarPublico = true;
     }
 
-    // Normalize pedidos: parse items if it's a string, add id if missing
+    // 2. Fallback o complemento con script público
+    if (usarPublico) {
+      const responsePublic = await fetch(`${API_URL}/public/pedidos`);
+      if (responsePublic.ok) {
+        const dataPublic = await responsePublic.json();
+        console.log("Respuesta pública (script):", dataPublic);
+        if (dataPublic.pedidos && Array.isArray(dataPublic.pedidos)) {
+          pedidosRaw = dataPublic.pedidos;
+        } else if (dataPublic.data && Array.isArray(dataPublic.data)) {
+          pedidosRaw = dataPublic.data; // fallback en caso de estructura distinta
+        } else {
+          console.warn("Formato público inesperado");
+        }
+      } else {
+        console.error("No se pudo obtener pedidos públicos. Status:", responsePublic.status);
+      }
+    }
+
+    if (!pedidosRaw) pedidosRaw = [];
+    console.log(`Total pedidos crudos recibidos: ${pedidosRaw.length}`);
+    if (pedidosRaw.length > 0) console.log("Primer pedido crudo:", pedidosRaw[0]);
+
+    // Normalize pedidos: support both Google Script and local DB formats
     todosPedidos = pedidosRaw.map((pedido, index) => {
-      let itemsParsed = pedido.items;
-      
-      // If items is a string, try to parse it
-      if (typeof pedido.items === 'string') {
+      // Map field names
+      const nombre = pedido.nombre ?? pedido.nombreCliente ?? "";
+      const telefonoVal = pedido.telefono ?? "";
+      const telefono = typeof telefonoVal === "number" ? String(telefonoVal) : String(telefonoVal || "");
+      const direccion = pedido.direccion ?? "";
+
+      // Parse items from either `items` (Google) or `itemsJson` (local)
+      let rawItems = pedido.items ?? pedido.itemsJson;
+      let itemsParsed = Array.isArray(rawItems) ? rawItems : [];
+      if (typeof rawItems === "string") {
         try {
-          itemsParsed = JSON.parse(pedido.items);
+          itemsParsed = JSON.parse(rawItems);
         } catch (e) {
-          console.warn("Could not parse items for pedido:", pedido);
+          console.warn("Could not parse items for pedido:", rawItems);
           itemsParsed = [];
         }
       }
 
+      // Fecha can be provided as `fecha`, Google `Columna 1`, or local `fechaCreacion`
+      const fecha = pedido.fecha ?? pedido["Columna 1"] ?? pedido.fechaCreacion ?? null;
+
+      // Estado default to PENDIENTE when missing
+      const estado = pedido.estado ?? "PENDIENTE";
+
+      // Prefer provided total, else compute later from items
+      const total = pedido.total ?? undefined;
+
       return {
-        ...pedido,
         id: pedido.id || index + 1,
+        nombre,
+        telefono,
+        direccion,
         items: Array.isArray(itemsParsed) ? itemsParsed : [],
-        fecha: pedido.fecha || pedido["Columna 1"] || pedido.fechaCreacion,
-        total: pedido.total || 0
+        fecha,
+        estado,
+        total
       };
     });
 

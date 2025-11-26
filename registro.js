@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       alert("Usuario creado ✅. Ahora inicia sesión.");
-      window.location.href = "login.html";
+      window.location.href = "Login.html";
     } catch (error) {
       console.error("register error:", error);
       alert("Error de conexión al backend.");

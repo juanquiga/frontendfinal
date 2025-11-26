@@ -11,7 +11,7 @@ function renderUsuarioBar() {
   if (!usuario || !token) {
     barra.innerHTML = `
       <div style="display:flex;gap:12px;justify-content:flex-end;padding:12px;">
-        <a href="login.html" class="btn">Iniciar Sesión</a>
+        <a href="Login.html" class="btn">Iniciar Sesión</a>
         <a href="registro.html" class="btn">Registrarse</a>
       </div>
     `;

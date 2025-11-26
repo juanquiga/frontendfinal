@@ -19,7 +19,7 @@ function verificarSesion() {
 
   if (isLoggedIn !== "true") {
     alert("⚠️ Debes iniciar sesión para acceder al panel de administración.");
-    window.location.href = "login.html";
+    window.location.href = "Login.html";
     return;
   }
 
@@ -38,7 +38,7 @@ function verificarSesion() {
 function cerrarSesion() {
   localStorage.clear();
   alert("✅ Sesión cerrada correctamente");
-  window.location.href = "login.html";
+  window.location.href = "Login.html";
 }
 
 function configurarEventos() {

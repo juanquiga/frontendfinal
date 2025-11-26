@@ -1,5 +1,5 @@
 // Menu.js
-const API_BASE = "https://backendfinal-rkrx.onrender.com/api";
+const API_BASE = "https://backendfinal-rkrx.onrender.com/api/public/menu";
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 function escapeHtml(str) {

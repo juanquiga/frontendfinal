@@ -1,6 +1,7 @@
 // admin.js - Admin panel for managing pedidos
 
 const API_URL = "https://backendfinal-rkrx.onrender.com/api";
+// admin.js - Admin panel for managing pedidos
 
 let todosPedidos = [];
 let pedidosFiltrados = [];
@@ -11,7 +12,7 @@ async function validarToken() {
   if (!token) {
     console.warn("No hay token en localStorage");
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "Login.html"; // Ajuste: nombre con mayúscula
     return false;
   }
   try {
@@ -23,12 +24,15 @@ async function validarToken() {
       console.warn("Token inválido o expirado");
       alert("⚠️ Sesión expirada. Inicia sesión nuevamente.");
       localStorage.clear();
-      window.location.href = "login.html";
+      window.location.href = "Login.html"; // Ajuste: nombre con mayúscula
       return false;
     }
     return true;
   } catch (e) {
     console.error("Error validando token:", e);
+    // en error de red también forzar re-login
+    localStorage.clear();
+    window.location.href = "Login.html";
     return false;
   }
 }
@@ -39,6 +43,9 @@ window.addEventListener("DOMContentLoaded", () => {
   validarToken().then(ok => {
     if (ok) {
       cargarPedidos();
+    } else {
+      // ya se redirigió dentro de validarToken
+      return;
     }
   });
   configurarEventos();
@@ -51,7 +58,7 @@ function verificarSesion() {
 
   if (isLoggedIn !== "true") {
     alert("⚠️ Debes iniciar sesión para acceder al panel de administración.");
-    window.location.href = "login.html";
+    window.location.href = "Login.html"; // Ajuste: nombre con mayúscula
     return;
   }
 
@@ -70,7 +77,7 @@ function verificarSesion() {
 function cerrarSesion() {
   localStorage.clear();
   alert("✅ Sesión cerrada correctamente");
-  window.location.href = "login.html";
+  window.location.href = "Login.html"; // Ajuste: nombre con mayúscula
 }
 
 function configurarEventos() {

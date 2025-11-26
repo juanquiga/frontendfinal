@@ -1,7 +1,7 @@
 // login.js
 // Sistema de autenticación con backend Spring Boot
 
-const API_URL = "https://backendfinal-rkrx.onrender.com";
+const API_URL = "https://backendfinal-rkrx.onrender.com/api/public";
 // Cambiar a URL de producción: "https://your-backend-domain.com/api/public"
 
 // Elementos del DOM

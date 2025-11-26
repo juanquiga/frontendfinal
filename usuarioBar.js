@@ -42,16 +42,7 @@ function renderUsuarioBar() {
     }
   }
 
-  document.querySelectorAll('a[href*="Carrito.html"], a[href*="carrito"]').forEach(a => {
-    a.addEventListener("click", (e) => {
-      const tk = localStorage.getItem("token");
-      if (!tk) {
-        e.preventDefault();
-        alert("Debes iniciar sesión para ver el carrito.");
-        window.location.href = "login.html";
-      }
-    });
-  });
+  
 }
 
 document.addEventListener("DOMContentLoaded", renderUsuarioBar);

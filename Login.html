@@ -1,46 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Iniciar sesión - ChocoBite</title>
-  <link rel="stylesheet" href="Estilo.css">
-     <li><a href="index.html" class="btn">Inicio</a></li>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sistema de Pedidos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .login-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .alert-error {
+      background: #fee;
+      border-left: 4px solid #f44336;
+      color: #c62828;
+    }
+
+    .alert-success {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      color: #2e7d32;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 5px;
+    }
+
+    .password-toggle-btn:hover {
+      color: #333;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-  <div id="usuarioBar"></div>
-  <main class="page-center">
-    <div class="auth-card">
-      <div class="auth-left">
-        <h1>Bienvenido a <span class="brand">ChocoBite</span></h1>
-        <p class="muted">Inicia sesión para finalizar tus pedidos y ver tu historial.</p>
-        <img src="assets/cookies-illustration.svg" alt="Galletas" class="auth-illustration" />
-      </div>
-
-      <div class="auth-right">
-        <h2>Iniciar sesión</h2>
-        <form id="loginForm" class="form">
-          <label class="field">
-            <span class="field-label">Usuario</span>
-            <input id="username" name="username" required autocomplete="username" />
-          </label>
-
-          <label class="field">
-            <span class="field-label">Contraseña</span>
-            <input id="password" name="password" type="password" required autocomplete="current-password" />
-          </label>
-
-          <div class="actions">
-            <button type="submit" class="btn primary">Entrar</button>
-            <a class="btn ghost" href="registro.html">Crear cuenta</a>
-          </div>
-          <p class="muted small">¿Problemas para iniciar? Verifica tus credenciales o regístrate.</p>
-        </form>
-      </div>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>🔐 Iniciar Sesión</h1>
+      <p>Accede a tu cuenta del sistema</p>
     </div>
-  </main>
 
-  <script src="usuarioBar.js" defer></script>
-  <script src="login.js" defer></script>
+    <div id="alert-container"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          placeholder="Ingresa tu usuario"
+          required
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-toggle">
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Ingresa tu contraseña"
+            required
+            autocomplete="current-password"
+          >
+          <button type="button" class="password-toggle-btn" id="toggle-password">
+            👁️
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="btn-submit">
+        Iniciar Sesión
+      </button>
+    </form>
+
+    <div class="register-link">
+      ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
 </body>
 </html>

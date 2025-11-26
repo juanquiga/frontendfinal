@@ -68,16 +68,40 @@ async function cargarPedidos() {
     const data = await response.json();
     
     // Handle different response formats
+    let pedidosRaw = [];
     if (Array.isArray(data)) {
-      todosPedidos = data;
+      pedidosRaw = data;
     } else if (data.data && Array.isArray(data.data)) {
-      todosPedidos = data.data;
+      pedidosRaw = data.data;
     } else if (data.pedidos && Array.isArray(data.pedidos)) {
-      todosPedidos = data.pedidos;
+      pedidosRaw = data.pedidos;
     } else {
       console.error("Formato de respuesta inesperado:", data);
-      todosPedidos = [];
+      pedidosRaw = [];
     }
+
+    // Normalize pedidos: parse items if it's a string, add id if missing
+    todosPedidos = pedidosRaw.map((pedido, index) => {
+      let itemsParsed = pedido.items;
+      
+      // If items is a string, try to parse it
+      if (typeof pedido.items === 'string') {
+        try {
+          itemsParsed = JSON.parse(pedido.items);
+        } catch (e) {
+          console.warn("Could not parse items for pedido:", pedido);
+          itemsParsed = [];
+        }
+      }
+
+      return {
+        ...pedido,
+        id: pedido.id || index + 1,
+        items: Array.isArray(itemsParsed) ? itemsParsed : [],
+        fecha: pedido.fecha || pedido["Columna 1"] || pedido.fechaCreacion,
+        total: pedido.total || 0
+      };
+    });
 
     pedidosFiltrados = [...todosPedidos];
     actualizarEstadisticas();
@@ -140,11 +164,16 @@ function renderizarPedidos() {
   }
 
   tbody.innerHTML = pedidosFiltrados
-    .sort((a, b) => b.id - a.id) // Más recientes primero
+    .sort((a, b) => {
+      // Sort by date if available, otherwise by id
+      const dateA = new Date(a.fecha || 0).getTime();
+      const dateB = new Date(b.fecha || 0).getTime();
+      return dateB - dateA || b.id - a.id;
+    })
     .map(pedido => {
       const itemsPreview = obtenerItemsPreview(pedido);
       const total = calcularTotal(pedido);
-      const fecha = formatearFecha(pedido.fechaCreacion || pedido.fecha);
+      const fecha = formatearFecha(pedido.fecha);
 
       return `
         <tr>
@@ -220,11 +249,16 @@ async function cambiarEstado(pedidoId, nuevoEstado) {
 }
 
 function obtenerItemsPreview(pedido) {
-  if (!pedido.items || pedido.items.length === 0) {
+  if (!pedido.items || !Array.isArray(pedido.items) || pedido.items.length === 0) {
     return "Sin items";
   }
 
   const totalItems = pedido.items.reduce((sum, item) => sum + (item.cantidad || 0), 0);
+  
+  if (totalItems === 0) {
+    return "Sin items";
+  }
+
   const primerItem = pedido.items[0];
   
   return totalItems === 1 
@@ -233,7 +267,13 @@ function obtenerItemsPreview(pedido) {
 }
 
 function calcularTotal(pedido) {
-  if (!pedido.items || pedido.items.length === 0) return 0;
+  // If total is already calculated (Google Script format), use it
+  if (pedido.total !== undefined && pedido.total !== null) {
+    return parseFloat(pedido.total);
+  }
+
+  // Otherwise calculate from items
+  if (!pedido.items || !Array.isArray(pedido.items) || pedido.items.length === 0) return 0;
   
   return pedido.items.reduce((sum, item) => {
     const precio = parseFloat(item.precio || 0);

@@ -5,10 +5,42 @@ const API_URL = "https://backendfinal-rkrx.onrender.com/api";
 let todosPedidos = [];
 let pedidosFiltrados = [];
 
+// Valida que el token JWT siga siendo válido contra un endpoint protegido.
+async function validarToken() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No hay token en localStorage");
+    localStorage.clear();
+    window.location.href = "login.html";
+    return false;
+  }
+  try {
+    const resp = await fetch(`${API_URL}/pedidos`, {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    if (resp.status === 401 || resp.status === 403) {
+      console.warn("Token inválido o expirado");
+      alert("⚠️ Sesión expirada. Inicia sesión nuevamente.");
+      localStorage.clear();
+      window.location.href = "login.html";
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("Error validando token:", e);
+    return false;
+  }
+}
+
 // Check session on load
 window.addEventListener("DOMContentLoaded", () => {
   verificarSesion();
-  cargarPedidos();
+  validarToken().then(ok => {
+    if (ok) {
+      cargarPedidos();
+    }
+  });
   configurarEventos();
 });
 
@@ -51,56 +83,12 @@ function configurarEventos() {
 
 async function cargarPedidos() {
   try {
-    const token = localStorage.getItem("token");
-    
-    // 1. Intentar endpoint autenticado
-    let responseAuth = await fetch(`${API_URL}/pedidos`, {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-
-    let pedidosRaw = [];
-    let usarPublico = false;
-
-    if (responseAuth.ok) {
-      const dataAuth = await responseAuth.json();
-      console.log("Respuesta autenticada:", dataAuth);
-      if (dataAuth && Array.isArray(dataAuth.data)) {
-        console.log("Formato autenticado ResponseDTO");
-        pedidosRaw = dataAuth.data;
-      } else if (Array.isArray(dataAuth)) {
-        pedidosRaw = dataAuth;
-      }
-      // Si está vacío, forzar fallback
-      if (!pedidosRaw || pedidosRaw.length === 0) {
-        console.log("Lista autenticada vacía → usar datos públicos del script");
-        usarPublico = true;
-      }
-    } else {
-      console.log("Fallo endpoint autenticado (", responseAuth.status, ") → usar público");
-      usarPublico = true;
-    }
-
-    // 2. Fallback o complemento con script público
-    if (usarPublico) {
-      const responsePublic = await fetch(`${API_URL}/public/pedidos`);
-      if (responsePublic.ok) {
-        const dataPublic = await responsePublic.json();
-        console.log("Respuesta pública (script):", dataPublic);
-        if (dataPublic.pedidos && Array.isArray(dataPublic.pedidos)) {
-          pedidosRaw = dataPublic.pedidos;
-        } else if (dataPublic.data && Array.isArray(dataPublic.data)) {
-          pedidosRaw = dataPublic.data; // fallback en caso de estructura distinta
-        } else {
-          console.warn("Formato público inesperado");
-        }
-      } else {
-        console.error("No se pudo obtener pedidos públicos. Status:", responsePublic.status);
-      }
-    }
-
-    if (!pedidosRaw) pedidosRaw = [];
-    console.log(`Total pedidos crudos recibidos: ${pedidosRaw.length}`);
-    if (pedidosRaw.length > 0) console.log("Primer pedido crudo:", pedidosRaw[0]);
+    // SIEMPRE usar el script público (ignorar backend autenticado)
+    const resp = await fetch(`${API_URL}/public/pedidos`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const json = await resp.json();
+    const pedidosRaw = (json.pedidos && Array.isArray(json.pedidos)) ? json.pedidos : [];
+    console.log(`Pedidos obtenidos del script público: ${pedidosRaw.length}`);
 
     // Normalize pedidos: support both Google Script and local DB formats
     todosPedidos = pedidosRaw.map((pedido, index) => {

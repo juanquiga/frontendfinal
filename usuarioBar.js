@@ -1,14 +1,5 @@
 // usuarioBar.js
-const API_BASE = "https://backendfinal-rkrx.onrender.com/api";
-
-function escapeHtml(str) {
-  return String(str || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+const API_BASE = "https://backendfinal-rkrx.onrender.com/api"; // tu backend
 
 function renderUsuarioBar() {
   const barra = document.getElementById("usuarioBar");
@@ -32,17 +23,22 @@ function renderUsuarioBar() {
       </div>
     `;
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("usuario");
-        window.location.reload();
-      });
-    }
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("usuario");
+      window.location.reload();
+    });
   }
+}
 
-  
+// proteger contra XSS
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 document.addEventListener("DOMContentLoaded", renderUsuarioBar);
